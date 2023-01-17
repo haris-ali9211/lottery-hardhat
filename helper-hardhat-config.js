@@ -6,7 +6,14 @@ const networkConfig = {
         vrfCoordinatorV2 : "0x6168499c0cFfCaCD319c818142124B7A15E857ab",
         entranceFees : ethers.utils.parseEther("0.01"),
         gasLane: "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc", //keyhash
-         subscriptionId : "7025",
+        subscriptionId : "7025",
+        callbackGasLimit : "500000",
+        interval : 30
+    },
+    31337: {
+        name : "localhost", 
+        entranceFees : ethers.utils.parseEther("0.01"),
+        gasLane: "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc", // this is the keyhash it could be anything for localhost and hardhat network
         callbackGasLimit : "500000",
         interval : 30
     },
@@ -18,19 +25,12 @@ const networkConfig = {
         subscriptionId: "0",
         callBackGasLimit: "500000",//500,000
         interval: "30"
-    },
-    31337: {
-        name : "localhost", 
-        entranceFees : ethers.utils.parseEther("0.01"),
-        gasLane: "0xd89b2bf150e3b9e13446986e571fb9cab24b13cea0a43ea20a6049a85cc807cc", // this is the keyhash it could be anything for localhost and hardhat network
-        callbackGasLimit : "500000",
-        interval : "30"
     }
 
 }
 
-const developmentChains = ["hardhat", "localhost"];
+const deveplomentChains = ["hardhat", "localhost"];
 module.exports = {
     networkConfig,
-    developmentChains
+    deveplomentChains
 }
