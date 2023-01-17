@@ -38,12 +38,16 @@ const { networkConfig, deveplomentChains } = require("../../helper-hardhat-confi
             it("emits event on enter", async () => {
                 await expect(raffle.enterRaffle({ value: raffleEntranceFees })).to.emit(raffle, "EnterRaffle")
             })
-            it("does not allow entrance when raffle is calculating", async () => {
+            it("doesn't allow entrance when raffle is calculating", async () => {
                 await raffle.enterRaffle({ value: raffleEntranceFees })
+                // for a documentation of the methods below, go here: https://hardhat.org/hardhat-network/reference
                 await network.provider.send("evm_increaseTime", [interval.toNumber() + 1])
-                await network.provider.send("evm_mine", [])
-                await raffle.performUpkeep([])
-                await expect(raffle.enterRaffle({ value: raffleEntranceFees })).to.be.revertedWith("Raffle__NotOpen")
+                await network.provider.request({ method: "evm_mine", params: [] })
+                // we pretend to be a keeper for a second
+                await raffle.performUpkeep([]) // changes the state to calculating for our comparison below
+                await expect(raffle.enterRaffle({ value: raffleEntranceFees })).to.be.revertedWith( // is reverted as raffle is calculating
+                    "Raffle__RaffleNotOpen"
+                )
             })
         })
         describe("checkUpKeep", function () {
