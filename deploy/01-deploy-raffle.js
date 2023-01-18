@@ -10,7 +10,8 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     const chainId = network.config.chainId;
     // const chainId = network.config.chainId;
 
-    let vrfCoordinatorV2Address, subscriptionId;
+    let vrfCoordinatorV2Address
+    let subscriptionId
     if(deveplomentChains.includes(network.name)) {
         const vrfCoordinatorV2Mock = await ethers.getContract("VRFCoordinatorV2Mock");
         vrfCoordinatorV2Address = vrfCoordinatorV2Mock.address
@@ -31,12 +32,11 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
     const interval = networkConfig[chainId]["interval"]
     // const args = [vrfCoordinatorV2Address,entranceFees,gasLane,subscriptionId,callbackGasLimit,interval]
     const args = [
-        networkConfig[chainId]["raffleEntranceFee"],
         vrfCoordinatorV2Address,
+        networkConfig[chainId]["raffleEntranceFee"],
         networkConfig[chainId]["gasLane"],
         subscriptionId,
         networkConfig[chainId]["callbackGasLimit"],
-        networkConfig[chainId]["keepersUpdateInterval"],
         networkConfig[chainId]["interval"]
     ]
 
