@@ -20,6 +20,7 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         const transectionReceipt = await transectionResponse.wait(1)
         subscriptionId = transectionReceipt.events[0].args.subId;
         //Fund the subscription
+        await vrfCoordinatorV2Mock.addConsumer(subscriptionId, raffle.address);
         await vrfCoordinatorV2Mock.fundSubscription(subscriptionId,VRF_SUB_FUND_AMOUNT)
     }
     else{
@@ -44,6 +45,8 @@ module.exports = async function ({ getNamedAccounts, deployments }) {
         from: deployer,
         args: args,
         log: true,
+        waitConfirmations: waitBlockConfirmations,
+
     })
 
     if(!deveplomentChains.includes(network.name) && process.env.ETHERSCAN_API_KEY){
