@@ -1,4 +1,6 @@
+import { MoralisProvider } from "react-moralis";
 const Header = ()=>{
+
     return(
         <div>
             hello from Header
