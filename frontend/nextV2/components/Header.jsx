@@ -2,7 +2,7 @@ import { useMoralis } from "react-moralis";
 import { useEffect } from "react";
 
 const ManualHeader = () => {
-    const { enableWeb3, account, isWeb3Enabled, Moralis, deactivateWeb3 } = useMoralis();
+    const { enableWeb3, account, isWeb3Enabled, Moralis, deactivateWeb3, isWeb3EnableLoading } = useMoralis();
 
     useEffect(() => {
         console.log("HI")
@@ -21,6 +21,7 @@ const ManualHeader = () => {
             if(account == null){
                 window.localStorage.removeItem("connected")
                 deactivateWeb3()
+                console.log("No account found")
             }
         })
     },[])
@@ -36,10 +37,12 @@ const ManualHeader = () => {
                             async () => {
                                 await enableWeb3()
                                 if(typeof window !== "undefine"){
-                                    window.localStorage.setItem("connected","inject")
+                                    window.localStorage.setItem("connected","injected")
                                 }
                             }
-                        }>Connect</button>
+                        }
+                        disabled={isWeb3EnableLoading}
+                        >Connect</button>
             }
             i am header
         </>

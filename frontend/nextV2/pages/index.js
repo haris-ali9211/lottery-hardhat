@@ -1,14 +1,11 @@
-import Head from 'next/head'
-import Image from 'next/image'
-import { Inter } from '@next/font/google'
-// import styles from '@/styles/Home.module.css'
-import ManualHeader from '@/components/Header'
-const inter = Inter({ subsets: ['latin'] })
+import Header from '../components/SimpleHeader'
+import LotteryEntrance from '../components/LotteryEntrance'
 
 export default function Home() {
   return (
     <>
-      <ManualHeader/>
+      <Header/>
+      <LotteryEntrance/>
     </>
   )
 }
