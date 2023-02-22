@@ -14,10 +14,15 @@ export default function LotteryEntrance() {
 
     const [entranceFeeFromContract, setEntranceFeeFromContract] = useState("0")
     const [numberOfPlayers, setNumberOfPlayers] = useState("0")
-    const [RecentWinner , setRecentWinner] = useState("0")
+    const [RecentWinner, setRecentWinner] = useState("0")
     const dispatch = useNotification();
 
-    const { runContractFunction: enterRaffle } = useWeb3Contract({
+    const {
+        runContractFunction: enterRaffle,
+        data: enterTxResponse,
+        isLoading,
+        isFetching,
+    } = useWeb3Contract({
         abi: abi,
         contractAddress: raffleAddress,
         functionName: "enterRaffle",
@@ -65,7 +70,7 @@ export default function LotteryEntrance() {
     const handleSuccess = async function (tx) {
         await tx.wait(1)
         handleNotification(tx)
-        updateUi()  
+        updateUi()
     }
 
     const handleNotification = function () {
@@ -84,23 +89,57 @@ export default function LotteryEntrance() {
             <br />
             {raffleAddress ?
                 <div>
-                    <button onClick={async function () {
-                        await enterRaffle({
-                            onSuccess: handleSuccess,
-                            onError: (error) => console.log(error),
-                        }
-                        )
-                    }}>Enter Raffle</button>
+                    <button
+                    className="border-solid border-2 border-sky-500"
+
+                        onClick={async function () {
+                            await enterRaffle({
+                                onSuccess: handleSuccess,
+                                onError: (error) => console.log(error),
+                            }
+                            )
+                        }}
+                        disabled={isLoading || isFetching}
+                    >Enter Raffle</button>
                     EntranceFee: {ethers.utils.formatUnits(entranceFeeFromContract, "ether")} Eth
-                    <br/>
+                    <br />
                     Number of Player {numberOfPlayers}
-                    <br/>
+                    <br />
                     Recent Winner {RecentWinner}
                 </div>
                 :
                 <div>No Raffle Address detected </div>
             }
-
+            
+            <div className="p-5">
+                <h1 className="py-4 px-4 font-bold text-3xl">Lottery</h1>
+                {raffleAddress ? (
+                    <>
+                        <button
+                            className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded ml-auto"
+                            onClick={async function () {
+                                await enterRaffle({
+                                    onSuccess: handleSuccess,
+                                    onError: (error) => console.log(error),
+                                }
+                                )
+                            }}
+                            disabled={isLoading || isFetching}
+                        >
+                            {isLoading || isFetching ? (
+                                <div className="animate-spin spinner-border h-8 w-8 border-b-2 rounded-full"></div>
+                            ) : (
+                                "Enter Raffle"
+                            )}
+                        </button>
+                        <div>Entrance Fee: {ethers.utils.formatUnits(entranceFeeFromContract, "ether")} ETH</div>
+                        <div>The current number of players is: {numberOfPlayers}</div>
+                        <div>The most previous winner was: {RecentWinner}</div>
+                    </>
+                ) : (
+                    <div>Please connect to a supported chain </div>
+                )}
+            </div>
         </>
     )
 }
