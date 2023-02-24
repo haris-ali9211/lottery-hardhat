@@ -19,12 +19,12 @@ export default function LotteryEntrance() {
 
     const {
         runContractFunction: enterRaffle,
-        data: enterTxResponse,
+        // data: enterTxResponse,
         isLoading,
         isFetching,
     } = useWeb3Contract({
         abi: abi,
-        contractAddress: raffleAddress,
+        contractAddress: raffleAddress, 
         functionName: "enterRaffle",
         params: {},
         msgValue: entranceFeeFromContract
@@ -90,7 +90,7 @@ export default function LotteryEntrance() {
             {raffleAddress ?
                 <div>
                     <button
-                    className="border-solid border-2 border-sky-500"
+                        className="border-solid border-2 border-sky-500"
 
                         onClick={async function () {
                             await enterRaffle({
@@ -110,7 +110,7 @@ export default function LotteryEntrance() {
                 :
                 <div>No Raffle Address detected </div>
             }
-            
+
             <div className="p-5">
                 <h1 className="py-4 px-4 font-bold text-3xl">Lottery</h1>
                 {raffleAddress ? (
